@@ -1,4 +1,4 @@
-class Player {
+export default class Player {
     constructor(game, x, y, characterImages, currentCharacter){
         this.game = game;
         this.x = x;
@@ -109,15 +109,19 @@ class Player {
     handleCollision(objects){
         this.isOnGround = false;
         objects.forEach(([[, objX], [, objY], [, objSize]]) => {
+
             //check for horizontal in moving direction collision
             if(this.isCollidingWith(objX - this.velocityX, objY, objSize, objSize)){
+                // set player x to where it's touching object
+                this.x = (this.velocityX > 0) ? objX - this.width : objX + objSize;
                 this.velocityX = 0;
             }
 
             //check for vertical in moving direction collision
-            if(this.isCollidingWith(objX, objY - this.velocityY * 2, objSize, objSize)){
+            if(this.isCollidingWith(objX, objY - this.velocityY, objSize, objSize)){
+                // set player y to where it's touching object
+                this.y = (this.velocityY > 0) ? objY - this.height : objY + objSize;
                 this.velocityY = 0;
-                this.y = objY - this.height
             }
 
             // check for ground collision
